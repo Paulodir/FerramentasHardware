@@ -24,7 +24,7 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AudioFragment.OnFragmentInteractionListener} interface
+// * {@link AudioFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AudioFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -42,12 +42,11 @@ public class AudioFragment extends Fragment {
     boolean mStartRecording=true;
 
     Button gravar, escutar;
+    ImageView imgStatus;
+
        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-           //ImageView status = view.findViewById(R.id.status);
-
         // Inflate the layout for this fragment
            View view = inflater.inflate(R.layout.fragment_audio, container, false);
 
@@ -56,24 +55,23 @@ public class AudioFragment extends Fragment {
 
            fileName=getActivity().getExternalCacheDir().getAbsolutePath()+"/audioSenac.3gp";
 
+           imgStatus = view.findViewById(R.id.status);
            gravar=view.findViewById(R.id.gravar);
-
            escutar=view.findViewById(R.id.escutar);
 
            gravar.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
-                   Toast.makeText(getActivity(),"gravando",Toast.LENGTH_SHORT).show();
+                   Toast.makeText(getActivity(),"Gravando",Toast.LENGTH_SHORT).show();
                    gravar();
                }
            });
 
            escutar.setOnClickListener(new View.OnClickListener() {
                @Override
-               public void onClick(View view) {
+               public void onClick(View v) {
+                   Toast.makeText(getActivity(),"Reproduzindo",Toast.LENGTH_SHORT).show();
                    escutar();
-
-
                }
            });
 
@@ -96,18 +94,23 @@ public class AudioFragment extends Fragment {
         onPlay(mStartPlayning);
         if(mStartPlayning){
             escutar.setText("parar audio");
+            imgStatus.setImageResource(R.drawable.player);
         }else{
-            escutar.setText("escutar");
+            escutar.setText("ouvir");
+            imgStatus.setImageResource(R.drawable.play);
+
         }
         mStartPlayning=!mStartPlayning;
     }
     public void gravar() {
            onRecord(mStartRecording);
+
            if(mStartRecording){
                gravar.setText("parar gravação");
-               ImageView imagem = setImageResource(status ? R.drawable.microphone);
+               imgStatus.setImageResource(R.drawable.microphone);
            }else{
                gravar.setText("gravar");
+               imgStatus.setImageResource(R.drawable.play);
            }
            mStartRecording=!mStartRecording;
 
@@ -161,9 +164,9 @@ public class AudioFragment extends Fragment {
 
     }
     private void stopRecording(){
-recorder.stop();
-        recorder.release();
-        recorder=null;
+           recorder.stop();
+           recorder.release();
+           recorder=null;
 
     }
 }
