@@ -1,16 +1,11 @@
 package com.edu.senac.ferramentashardware;
+/*
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +13,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GeolocalizacaoFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
+public class GeolocalizacaoFragmentBackup extends Fragment {
     //Permissão do GPS
     private static final int REQUEST_ACCESS_FINE_LOCATION = 200;
     private static final int REQUEST_ACCESS_COARSE_LOCATION = 200;
@@ -26,9 +25,8 @@ public class GeolocalizacaoFragment extends Fragment {
     private String[] permission = {Manifest.permission.ACCESS_COARSE_LOCATION};
     private boolean permissionGPS = false;
     LocationManager locationManager;
-
     //Declara variável
-    TextView textViewLatitude, textViewLongitude;
+    TextView lati, longi;
     Button getlocation;
 
     @Override
@@ -42,14 +40,14 @@ public class GeolocalizacaoFragment extends Fragment {
 
         //find id
         getlocation = view.findViewById(R.id.getCoordenadas);
-        textViewLatitude = view.findViewById(R.id.campoLatitude);
-        textViewLongitude = view.findViewById(R.id.campoLongitude);
+        lati = view.findViewById(R.id.campoLatitude);
+        longi = view.findViewById(R.id.campoLongitude);
 
         //onclick
         getlocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mostraCoordenadas();
+                getCoordenadas();
             }
         });
         return view;
@@ -57,7 +55,8 @@ public class GeolocalizacaoFragment extends Fragment {
 
     //solicitar permissão de GPS
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_ACCESS_FINE_LOCATION:
@@ -70,43 +69,45 @@ public class GeolocalizacaoFragment extends Fragment {
     }
 
 
-    public void mostraCoordenadas() {
+    public void getCoordenadas() {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new GeolocalizacaoFragment.MyLocationListener();
+        Location location = new GeolocalizacaoFragmentBackup.MyLocation();
         //LocationManager.GPS_PROVIDER Use GPS Targeting / LocationManager.NETWORK_PROVIDER Use Network Targeting
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 1000, 1,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
+                location);
     }
 
-    private class MyLocationListener implements LocationListener {
+    private  class minhasCoordenadas implements Location{
+
+    }
+    private class MyLocation implements Location{
         @Override
+        //
         //This function is triggered when the coordinates change.
         // If the Provider passes the same coordinates, it will not be triggered.
         public void onLocationChanged(Location location) {
             String longitude = Double.toString(location.getLongitude());
             String latitude = Double.toString(location.getLatitude());
-            textViewLongitude.setText(longitude);
-            textViewLatitude.setText(latitude);
+            longi.setText(longitude);
+            lati.setText(latitude);
         }
 
         @Override
-        //Esta função é acionada a localização do GPS está desligada
+        //Esta função é acionada quando desativada, como o GPS está desligado
         public void onProviderDisabled(String provider) {
-            Toast.makeText(getContext(), "Localização está Desabilitada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Localização Desativada", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         //This function is triggered when the Provider is enabled, such as GPS is turned on.
         public void onProviderEnabled(String provider) {
-            Toast.makeText(getContext(), "Localização foi Habilitada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "on ProviderEnabled", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        //Provider's transition state triggers this function when the three states of available,
-        // temporarily unavailable, and no service are directly switched.
         // Essa função é acionada quando há uma mudança na situação do gps
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Toast.makeText(getContext(), "Alterado Status da Localização", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "onStatusChanged", Toast.LENGTH_SHORT).show();
         }
     }
-}
+}*/
