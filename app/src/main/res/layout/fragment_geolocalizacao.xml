@@ -12,18 +12,17 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="218dp"
-            android:layout_height="211dp"
+            android:id="@+id/Maps"
+            android:layout_width="82dp"
+            android:layout_height="77dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/pin_location"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.72"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.489" />
+            app:layout_constraintVertical_bias="0.295" />
 
         <TextView
             android:id="@+id/textView11"
@@ -61,8 +60,8 @@
 
         <TextView
             android:id="@+id/campoLongitude"
-            android:layout_width="210dp"
-            android:layout_height="32dp"
+            android:layout_width="142dp"
+            android:layout_height="31dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -70,23 +69,23 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/getCoordenadas"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.962"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/campoLatitude"
-            app:layout_constraintVertical_bias="0.563" />
+            app:layout_constraintVertical_bias="0.538" />
 
         <TextView
             android:id="@+id/campoLatitude"
-            android:layout_width="210dp"
-            android:layout_height="32dp"
+            android:layout_width="139dp"
+            android:layout_height="33dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="320dp"
             android:layout_marginEnd="8dp"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.956"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/getCoordenadas"
@@ -105,6 +104,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/Compartilhar"
+            android:layout_width="68dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_menu_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/Maps"
+            app:layout_constraintHorizontal_bias="0.651"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.285"
+            app:srcCompat="@drawable/ic_menu_share" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
