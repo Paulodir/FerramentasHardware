@@ -112,7 +112,7 @@ boolean viewIsAtHome=true;
         viewIsAtHome =false;
         }else if (id == R.id.nav_acelerometro){
             fragment = new AcelerometroFragment();
-            title ="acceleraçaõ";
+            title ="Acelerômetro";
         }
         if (getSupportActionBar()!= null){
             getSupportActionBar().setTitle(title);

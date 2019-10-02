@@ -24,149 +24,176 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
-// * {@link AudioFragment.OnFragmentInteractionListener} interface
+ * // * {@link AudioFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AudioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AudioFragment extends Fragment {
 
-    private static final  int REQUEST_RECORD_AUDIO_PERMISSION=200;
-    private static String fileName=null;
-    private MediaRecorder recorder=null;
-    private MediaPlayer player=null;
-    private boolean permissionRecord=false;
-    private String [] permissions={Manifest.permission.RECORD_AUDIO};
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static String fileName = null;
+    private MediaRecorder recorder = null;
+    private MediaPlayer player = null;
+    private boolean permissionRecord = false;
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
-    boolean mStartPlayning =true;
-    boolean mStartRecording=true;
+    boolean mStartPlayning = true;
+    boolean mStartRecording = true;
+    boolean gravando = false;
+    boolean ouvindo = false;
 
     Button gravar, escutar;
     ImageView imgStatus;
 
-       @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-           View view = inflater.inflate(R.layout.fragment_audio, container, false);
+        View view = inflater.inflate(R.layout.fragment_audio, container, false);
 
-           //solicita as permissoes para o usuario
-           ActivityCompat.requestPermissions(getActivity(),permissions,REQUEST_RECORD_AUDIO_PERMISSION);
+        //solicita as permissoes para o usuario
+        ActivityCompat.requestPermissions(getActivity(), permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-           fileName=getActivity().getExternalCacheDir().getAbsolutePath()+"/audioSenac.3gp";
+        fileName = getActivity().getExternalCacheDir().getAbsolutePath() + "/audioSenac.3gp";
 
-           imgStatus = view.findViewById(R.id.status);
-           gravar=view.findViewById(R.id.gravar);
-           escutar=view.findViewById(R.id.escutar);
+        imgStatus = view.findViewById(R.id.status);
+        gravar = view.findViewById(R.id.gravar);
+        escutar = view.findViewById(R.id.escutar);
 
-           gravar.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Toast.makeText(getActivity(),"Gravando",Toast.LENGTH_SHORT).show();
-                   gravar();
-               }
-           });
+        gravar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Gravando", Toast.LENGTH_SHORT).show();
+                gravar();
+            }
+        });
 
-           escutar.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   Toast.makeText(getActivity(),"Reproduzindo",Toast.LENGTH_SHORT).show();
-                   escutar();
-               }
-           });
+        escutar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Reproduzindo", Toast.LENGTH_SHORT).show();
+                escutar();
+            }
+        });
 
-           return view;
+        return view;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_RECORD_AUDIO_PERMISSION:permissionRecord=grantResults[0]== PackageManager.PERMISSION_GRANTED;
-            break;
+        switch (requestCode) {
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                permissionRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
         }
-        if(!permissionRecord){
-            Toast.makeText(getActivity(),"Aceite as Permissões",Toast.LENGTH_SHORT).show();
+        if (!permissionRecord) {
+            Toast.makeText(getActivity(), "Aceite as Permissões", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void escutar() {
+        //if (gravando == true){
+        //  gravar();
+        //}
         onPlay(mStartPlayning);
-        if(mStartPlayning){
+        if (mStartPlayning) {
+
             escutar.setText("parar audio");
             imgStatus.setImageResource(R.drawable.player);
-        }else{
+        } else {
             escutar.setText("ouvir");
             imgStatus.setImageResource(R.drawable.play);
 
         }
-        mStartPlayning=!mStartPlayning;
+        mStartPlayning = !mStartPlayning;
     }
+
     public void gravar() {
-           onRecord(mStartRecording);
+        //if (ouvindo == true){
+        //Toast.makeText(getActivity(), "a opção de ouvindo esta ok", Toast.LENGTH_SHORT).show();
+        //  escutar();
+        //       }
+        onRecord(mStartRecording);
 
-           if(mStartRecording){
-               gravar.setText("parar gravação");
-               imgStatus.setImageResource(R.drawable.microphone);
-           }else{
-               gravar.setText("gravar");
-               imgStatus.setImageResource(R.drawable.play);
-           }
-           mStartRecording=!mStartRecording;
+        if (mStartRecording) {
+
+            gravar.setText("parar gravação");
+            imgStatus.setImageResource(R.drawable.microphone);
+        } else {
+
+            gravar.setText("gravar");
+            imgStatus.setImageResource(R.drawable.play);
+        }
+        mStartRecording = !mStartRecording;
 
 
     }
-    private void startPlayning(){
-           player= new MediaPlayer();
-           try{
-               player.setDataSource(fileName);
-               player.prepare();
-               player.start();
-           }catch(Exception e){
-               Log.e("audio","erro=>startPlayning");
-           }
-           
+
+    private void startPlayning() {
+        ouvindo = true;
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(fileName);
+            player.prepare();
+            player.start();
+        } catch (Exception e) {
+            Log.e("audio", "erro=>startPlayning");
+        }
+
     }
-    public void  onPlay(boolean start){
-        if(start){
+
+    //(gravando)?"fdfdf":"fbdfgf";
+    public void onPlay(boolean start) {
+        if (start) {
+            //if(gravando==true){
+            //   ouvindo==false
+            //  }
             startPlayning();
-        }else{
+        } else {
             stopPlayning();
         }
     }
-    public void  onRecord(boolean start){
-           if(start){
-               startRecording();
-           }else{
-               stopRecording();
-           }
+
+    public void onRecord(boolean start) {
+        if (start) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
     }
-    
-    private void stopPlayning(){
-           player.release();
-           player=null;
+
+    private void stopPlayning() {
+        ouvindo = false;
+        player.release();
+        player = null;
 
     }
-    private void startRecording(){
-           recorder=new MediaRecorder();
-           
-           recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-           recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-           recorder.setOutputFile(fileName);
-           recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-           try{
+
+    private void startRecording() {
+        gravando = true;
+        recorder = new MediaRecorder();
+
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(fileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        try {
             recorder.prepare();
 
-        }catch(Exception e){
-            Log.e("audio","erro=>startRecording");
+        } catch (Exception e) {
+            Log.e("audio", "erro=>startRecording");
         }
-           recorder.start();
+        recorder.start();
 
     }
-    private void stopRecording(){
-           recorder.stop();
-           recorder.release();
-           recorder=null;
+
+    private void stopRecording() {
+        gravando = false;
+        recorder.stop();
+        recorder.release();
+        recorder = null;
 
     }
 }
