@@ -60,6 +60,10 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
+        direcao.setRotation(10*sensorEvent.values[0]);
+
+        
+
         if((sensorEvent.values[0])<(-2.5)){
             resposta="Você Inclinou Para:" +
                     "\nDireita";
@@ -70,7 +74,6 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
             resposta="Incline Para " +
                     "\nEsquerda ou Direita";
         }
-        direcao.setText(resposta);
         //+"\n X: "+sensorEvent.values[0]+"\n Y: "+sensorEvent.values[1]+"\n Z: "+sensorEvent.values[2]);
     }
 
