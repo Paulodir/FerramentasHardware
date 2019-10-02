@@ -41,11 +41,12 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
     SensorManager sm;
     TextView direcao;
     String resposta;
+    ImageView imagem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_acelerometro, container, false);
 
         sm =(SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
@@ -71,6 +72,7 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
                     "\nEsquerda ou Direita";
         }
         direcao.setText(resposta);
+      //  imagem.setImageResource(R.drawable.swipe);
         //+"\n X: "+sensorEvent.values[0]+"\n Y: "+sensorEvent.values[1]+"\n Z: "+sensorEvent.values[2]);
     }
 
