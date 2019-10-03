@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import static android.content.Context.SENSOR_SERVICE;
 
 
@@ -37,10 +39,12 @@ import static android.content.Context.SENSOR_SERVICE;
  * create an instance of this fragment.
  */
 public class AcelerometroFragment extends Fragment implements SensorEventListener {
+    DecimalFormat df = new DecimalFormat("#.0");
     Sensor acelerometro;
     SensorManager sm;
     TextView direcao;
     String resposta;
+    Float num = 0.0f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +55,7 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
         sm =(SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
         acelerometro = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        sm.registerListener( this,acelerometro,SensorManager.SENSOR_DELAY_NORMAL);
+        sm.registerListener( this,acelerometro,SensorManager.SENSOR_STATUS_ACCURACY_LOW);
         direcao=view.findViewById(R.id.direcao);
 
         return view;
@@ -60,9 +64,15 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-        direcao.setRotation(10*sensorEvent.values[0]);
+        num =(float) Math.floor(sensorEvent.values[0]);
+        direcao.setRotation(10*num);
 
-        
+
+        if (sensorEvent.values[1] <= 0){
+            direcao.setRotationX(180);
+        }else{
+            direcao.setRotationX(0);
+        }
 
         if((sensorEvent.values[0])<(-2.5)){
             resposta="Você Inclinou Para:" +
