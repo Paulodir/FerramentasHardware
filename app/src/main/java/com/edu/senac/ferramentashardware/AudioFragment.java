@@ -1,11 +1,9 @@
 package com.edu.senac.ferramentashardware;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,14 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+ */
 public class AudioFragment extends Fragment {
+
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
     private MediaRecorder recorder = null;
-    private MediaPlayer player = null;
+    MediaPlayer mediaPlayer = null;
     private boolean permissionRecord = false;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
@@ -34,8 +36,13 @@ public class AudioFragment extends Fragment {
     boolean gravando = false;
     boolean ouvindo = false;
 
+    SeekBar posicaoBar;
+    SeekBar volumeBar;
+    TextView tempoTranscorido;
+    TextView tempoRestante;
     Button gravar, escutar;
     ImageView imgStatus;
+    int tempoTotal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,11 +128,31 @@ public class AudioFragment extends Fragment {
 
     private void startPlayning() {
         ouvindo = true;
-        player = new MediaPlayer();
+        mediaPlayer = new MediaPlayer();
         try {
-            player.setDataSource(fileName);
-            player.prepare();
-            player.start();
+            mediaPlayer.setDataSource(fileName);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            volumeBar = getActivity().findViewById(R.id.volume);
+            volumeBar.setOnSeekBarChangeListener(
+                    new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            float volumeNum = progress / 100f;
+                            mediaPlayer.setVolume(volumeNum, volumeNum);
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    }
+            );
 
         } catch (Exception e) {
             Log.e("audio", "erro=>startPlayning");
@@ -138,7 +165,6 @@ public class AudioFragment extends Fragment {
         escutar();
 
     }
-
     public void onPlay(boolean start) {
         if (start) {
 
@@ -158,8 +184,8 @@ public class AudioFragment extends Fragment {
 
     private void stopPlayning() {
         ouvindo = false;
-        player.release();
-        player = null;
+        mediaPlayer.release();
+        mediaPlayer = null;
 
     }
 
@@ -187,4 +213,5 @@ public class AudioFragment extends Fragment {
         recorder = null;
 
     }
+
 }
