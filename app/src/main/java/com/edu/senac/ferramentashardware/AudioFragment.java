@@ -1,11 +1,9 @@
 package com.edu.senac.ferramentashardware;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +31,7 @@ import android.widget.Toast;
  */
 public class AudioFragment extends Fragment {
 
+
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
     private MediaRecorder recorder = null;
@@ -45,17 +44,18 @@ public class AudioFragment extends Fragment {
     boolean gravando = false;
     boolean ouvindo = false;
 
-    Button gravar, escutar;
-    ImageView imgStatus;
     SeekBar posicaoBar;
     SeekBar volumeBar;
     TextView tempoTranscorido;
     TextView tempoRestante;
+    Button gravar, escutar;
+    ImageView imgStatus;
     int tempoTotal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
 
         //solicita as permissoes para o usuario
@@ -100,9 +100,9 @@ public class AudioFragment extends Fragment {
     }
 
     public void escutar() {
-        //if (gravando == true){
-        //  gravar();
-        //}
+        if (!mStartRecording){
+            gravar();
+        }
         onPlay(mStartPlayning);
         if (mStartPlayning) {
 
@@ -117,10 +117,9 @@ public class AudioFragment extends Fragment {
     }
 
     public void gravar() {
-        //if (ouvindo == true){
-        //Toast.makeText(getActivity(), "a opção de ouvindo esta ok", Toast.LENGTH_SHORT).show();
-        //  escutar();
-        //       }
+        if (!mStartPlayning){
+            escutar();
+        }
         onRecord(mStartRecording);
 
         if (mStartRecording) {
@@ -136,7 +135,6 @@ public class AudioFragment extends Fragment {
 
 
     }
-
     private void startPlayning() {
         ouvindo = true;
         mediaPlayer = new MediaPlayer();
@@ -144,6 +142,26 @@ public class AudioFragment extends Fragment {
             mediaPlayer.setDataSource(fileName);
             mediaPlayer.prepare();
             mediaPlayer.start();
+            volumeBar = getActivity().findViewById(R.id.volume);
+            volumeBar.setOnSeekBarChangeListener(
+                    new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            float volumeNum = progress / 100f;
+                            mediaPlayer.setVolume(volumeNum, volumeNum);
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    }
+            );
         } catch (Exception e) {
             Log.e("audio", "erro=>startPlayning");
         }
@@ -202,4 +220,5 @@ public class AudioFragment extends Fragment {
         recorder = null;
 
     }
+
 }

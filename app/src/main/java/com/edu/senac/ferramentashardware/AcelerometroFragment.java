@@ -44,7 +44,7 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
     SensorManager sm;
     TextView direcao;
     String resposta;
-    Float num = 0.0f;
+    Float axisX = 0.0f, axisY = 0.0f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,11 +64,13 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-        num =(float) Math.floor(sensorEvent.values[0]*10)/10;
-        direcao.setRotation(10*num);
+        axisX =(float) Math.floor(sensorEvent.values[0]*10)/10;
+        axisY =(float) Math.floor(sensorEvent.values[1]);
+        direcao.setRotation(10*axisX);
 
 
-        if (sensorEvent.values[1] <= 0){
+        Log.e("aaa",""+axisX);
+        if (axisY < 0){
             direcao.setRotationX(180);
         }else{
             direcao.setRotationX(0);
