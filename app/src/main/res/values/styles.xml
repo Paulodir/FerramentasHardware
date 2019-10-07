@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:progressBackgroundTint">#16DB08</item>
+        <item name="android:progressTint">#FFFFFF</item>
+        <item name="android:colorControlActivated">#DB0505</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
