@@ -20,15 +20,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * // * {@link AudioFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AudioFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AudioFragment extends Fragment {
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -64,7 +55,6 @@ public class AudioFragment extends Fragment {
         gravar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Gravando", Toast.LENGTH_SHORT).show();
                 gravar();
             }
         });
@@ -72,7 +62,6 @@ public class AudioFragment extends Fragment {
         escutar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Reproduzindo", Toast.LENGTH_SHORT).show();
                 escutar();
             }
         });
@@ -94,9 +83,9 @@ public class AudioFragment extends Fragment {
     }
 
     public void escutar() {
-        //if (gravando == true){
-        //  gravar();
-        //}
+        if (!mStartRecording){
+            gravar();
+        }
         onPlay(mStartPlayning);
         if (mStartPlayning) {
 
@@ -111,10 +100,9 @@ public class AudioFragment extends Fragment {
     }
 
     public void gravar() {
-        //if (ouvindo == true){
-        //Toast.makeText(getActivity(), "a opção de ouvindo esta ok", Toast.LENGTH_SHORT).show();
-        //  escutar();
-        //       }
+        if (!mStartPlayning){
+            escutar();
+        }
         onRecord(mStartRecording);
 
         if (mStartRecording) {
@@ -138,18 +126,22 @@ public class AudioFragment extends Fragment {
             player.setDataSource(fileName);
             player.prepare();
             player.start();
+
         } catch (Exception e) {
             Log.e("audio", "erro=>startPlayning");
         }
+        while (player.isPlaying()){
+
+        }
+
+        player.pause();
+        escutar();
 
     }
 
-    //(gravando)?"fdfdf":"fbdfgf";
     public void onPlay(boolean start) {
         if (start) {
-            //if(gravando==true){
-            //   ouvindo==false
-            //  }
+
             startPlayning();
         } else {
             stopPlayning();
@@ -186,7 +178,6 @@ public class AudioFragment extends Fragment {
             Log.e("audio", "erro=>startRecording");
         }
         recorder.start();
-
     }
 
     private void stopRecording() {
