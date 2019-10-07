@@ -98,10 +98,18 @@ public class AudioFragment extends Fragment {
             Toast.makeText(getActivity(), "Aceite as Permissões", Toast.LENGTH_SHORT).show();
         }
     }
+<<<<<<< HEAD
     public void escutar() {
         if (!mStartRecording){
             gravar();
         }
+=======
+
+    public void escutar() {
+        //if (gravando == true){
+        //  gravar();
+        //}
+>>>>>>> d36681cb768d4b299604249d37c11838d54ca144
         onPlay(mStartPlayning);
         if (mStartPlayning) {
 
@@ -116,9 +124,16 @@ public class AudioFragment extends Fragment {
     }
 
     public void gravar() {
+<<<<<<< HEAD
         if (!mStartPlayning){
             escutar();
         }
+=======
+        //if (ouvindo == true){
+        //Toast.makeText(getActivity(), "a opção de ouvindo esta ok", Toast.LENGTH_SHORT).show();
+        //  escutar();
+        //       }
+>>>>>>> d36681cb768d4b299604249d37c11838d54ca144
         onRecord(mStartRecording);
 
         if (mStartRecording) {
