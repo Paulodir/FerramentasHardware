@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,8 @@ public class AudioFragment extends Fragment {
         imgStatus = view.findViewById(R.id.status);
         gravar = view.findViewById(R.id.gravar);
         escutar = view.findViewById(R.id.escutar);
+        tempoTranscorido = view.findViewById(R.id.tempoPassado);
+        tempoRestante = view.findViewById(R.id.tempoFaltando);
 
         gravar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +146,12 @@ public class AudioFragment extends Fragment {
             mediaPlayer.setDataSource(fileName);
             mediaPlayer.prepare();
             mediaPlayer.start();
+            //mediaPlayer = MediaPlayer.create(this,R.raw.fireball);//(this, R.media.music);
+            mediaPlayer.setLooping(false);
+            mediaPlayer.seekTo(0);
+            mediaPlayer.setVolume(0.5f, 0.5f);
+            tempoTotal = mediaPlayer.getDuration();
+
             volumeBar = getActivity().findViewById(R.id.volume);
             volumeBar.setOnSeekBarChangeListener(
                     new SeekBar.OnSeekBarChangeListener() {
@@ -162,6 +172,44 @@ public class AudioFragment extends Fragment {
                         }
                     }
             );
+
+            posicaoBar = getActivity().findViewById(R.id.progresso);
+            posicaoBar.setMax(tempoTotal);
+            posicaoBar.setOnSeekBarChangeListener(
+                    new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            if (fromUser) {
+                                mediaPlayer.seekTo(progress);
+                                posicaoBar.setProgress(progress);
+                            }
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    }
+            );
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (mediaPlayer != null) {
+                        try {
+                            Message msg = new Message();
+                            msg.what = mediaPlayer.getCurrentPosition();
+                            handler.sendMessage(msg);
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {}
+                    }
+                }
+            }).start();
         } catch (Exception e) {
             Log.e("audio", "erro=>startPlayning");
         }
@@ -219,6 +267,33 @@ public class AudioFragment extends Fragment {
         recorder.release();
         recorder = null;
 
+    }
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int currentPosition = msg.what;
+            // Atualiza progressoBar
+            posicaoBar.setProgress(currentPosition);
+
+            // Atualiza tempo
+            String elapsedTime = criaTemporizador(currentPosition);
+            tempoTranscorido.setText(elapsedTime);
+
+            String remainingTime = criaTemporizador(tempoTotal-currentPosition);
+            tempoRestante.setText("- " + remainingTime);
+        }
+    };
+
+    public String criaTemporizador(int time) {
+        String tempo = "";
+        int min = time / 1000 / 60;
+        int sec = time / 1000 % 60;
+
+        tempo = min + ":";
+        if (sec < 10) tempo += "0";
+        tempo += sec;
+
+        return tempo;
     }
 
 }
