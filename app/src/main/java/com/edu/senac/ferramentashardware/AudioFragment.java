@@ -20,7 +20,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
- */
 public class AudioFragment extends Fragment {
 
 
@@ -157,11 +156,11 @@ public class AudioFragment extends Fragment {
         } catch (Exception e) {
             Log.e("audio", "erro=>startPlayning");
         }
-        while (player.isPlaying()){
+        while (mediaPlayer.isPlaying()){
 
         }
 
-        player.pause();
+        mediaPlayer.pause();
         escutar();
 
     }

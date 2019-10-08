@@ -113,6 +113,12 @@ boolean viewIsAtHome=true;
         }else if (id == R.id.nav_acelerometro){
             fragment = new AcelerometroFragment();
             title ="Acelerômetro";
+        }else if (id == R.id.nav_dadostelefone){
+            fragment = new DadosTelFragment();
+            title ="Dados do telefone";
+        }else if (id == R.id.nav_qrcode){
+            fragment = new QrcodeFragment();
+            title = "QR Code";
         }
         if (getSupportActionBar()!= null){
             getSupportActionBar().setTitle(title);

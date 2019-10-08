@@ -20,6 +20,14 @@
             android:id="@+id/nav_geolocalizacao"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="geolocalizacao" />
+        <item
+            android:id="@+id/nav_dadostelefone"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="dados do telefone" />
+        <item
+            android:id="@+id/nav_qrcode"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="QR Code" />
     </group>
 
     <item android:title="Communicate">
